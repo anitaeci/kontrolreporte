@@ -4,7 +4,6 @@ import com.kontrol.entity.WorkOrderDAO;
 import com.kontrol.pojo.WorkOrder;
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
-import jakarta.mail.internet.MailDateFormat;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -13,25 +12,37 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
     
-
+/**
+ * Definición del recurso ordenes de trabajo
+ * @author anita
+ */
 @Path("orders")
 public class WorkOrderServices {
     
-    
+    /**
+     * Injección de dependencias para la comunicación con la base de datos
+     */
     @Inject 
     private WorkOrderDAO workOrderDAO;
     
+    /**
+     * Operacion get para consultar todas las ordenes de trabajo
+     * @return 
+     */
     @GET
     public Response getWorkOrders(){
         return Response
                 .ok(workOrderDAO.getAllWorkOrders())
                 .build();        
     }
-    
+    /**
+     * Operación get para consultar una orden de trabajo en particular
+     * por su identificador
+     * @param id
+     * @return 
+     */
     @GET
     @Path("/{id}")
     public Response gegWorkOrder(@PathParam("id") String id){
@@ -41,11 +52,16 @@ public class WorkOrderServices {
                 .ok(workOrder).build();
         }
         else {
+            // Retorna el estado sin respuesta
             return Response.noContent().build();
         }
         
     }
-    
+    /**
+     * Operación para insertar una orden de trabajo
+     * @param requestJson
+     * @return 
+     */
     @POST
     public Response insertWorkOrder(JsonObject requestJson){
         System.out.println(requestJson);
@@ -65,7 +81,11 @@ public class WorkOrderServices {
         workOrder.setId(id);
         return Response.ok(workOrder).build();
     }
-    
+    /**
+     * Operación para eliminar una orden de trabajo
+     * @param id: Identificador de la orde de trabajo
+     * @return 
+     */
     @DELETE
     @Path("/{id}")
     public Response deleteWorkOrder(@PathParam("id") String id){
@@ -73,8 +93,4 @@ public class WorkOrderServices {
         workOrderDAO.deleteWorkOrder(id);
         return Response.ok().build();
     }
-    
-    
-    
-    
 }

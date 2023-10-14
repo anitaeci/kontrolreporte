@@ -1,14 +1,21 @@
 package com.kontrol.pojo;
 
-import java.util.Calendar;
 import java.util.Date;
 
-
+/**
+ * Representa una orden de trabajo 
+ * @author anita
+ */
 public class WorkOrder {
+    // Identificador de la orden de tabajo
     private String id;
+    // Cliente 
     private String client;
+    // Fecha
     private Date date;
+    // Equipo
     private String asset;
+    // Técnico
     private String Technician;
     
     public String getId() {
