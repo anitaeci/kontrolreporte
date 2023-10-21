@@ -12,6 +12,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -93,6 +94,18 @@ public class WorkOrderDAO {
         System.out.println(query);
         this.getCollection().deleteOne(query);
     }
+    
+    public void updateWorkOrder(WorkOrder workOrder){
+        Bson query = eq("_id",new ObjectId(workOrder.getId()));
+        List<Bson> updates = new ArrayList<>();
+        if(null!=workOrder.getAsset()) updates.add(Updates.set("asset", workOrder.getAsset()));
+        if(null!=workOrder.getClient()) updates.add(Updates.set("client", workOrder.getClient()));
+        if(null!=workOrder.getDate()) updates.add(Updates.set("date", workOrder.getDate()));
+        if(null!=workOrder.getTechnician()) updates.add(Updates.set("technician", workOrder.getTechnician()));
+        Bson update = Updates.combine(updates);
+        this.getCollection().updateOne(query, update);
+    }
+    
     /**
      * Método para convertir de la base de datos a el objeto java
      * @param document
@@ -114,10 +127,18 @@ public class WorkOrderDAO {
      */
     private Document workOrderToDocument (WorkOrder workOrder){
         Document document = new Document();
-        document.append("asset", workOrder.getAsset());
-        document.append("client", workOrder.getClient());
-        document.append("date", workOrder.getDate());
-        document.append("technician", workOrder.getTechnician());
+        if(null != workOrder.getAsset()){
+            document.append("asset", workOrder.getAsset());
+        }
+        if(null != workOrder.getClient()){
+            document.append("client", workOrder.getClient());
+        }
+        if(null != workOrder.getDate()){
+            document.append("date", workOrder.getDate());
+        }
+        if(null != workOrder.getTechnician()){
+            document.append("technician", workOrder.getTechnician());
+        }
         return document;
     }
     

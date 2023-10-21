@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -92,5 +93,33 @@ public class WorkOrderServices {
         System.out.println("id en el request "+id);
         workOrderDAO.deleteWorkOrder(id);
         return Response.ok().build();
+    }
+    @PATCH
+    @Path("/{id}")
+    public Response updateWorkOrder(@PathParam("id") String id,
+            JsonObject requestJson){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        WorkOrder workOrder = new WorkOrder();
+        workOrder.setId(id);
+        if(requestJson.containsKey("asset")){
+            workOrder.setAsset(requestJson.getString("asset"));
+        }
+        if(requestJson.containsKey("client")){
+            workOrder.setClient(requestJson.getString("client"));
+        }
+        if(requestJson.containsKey("date")){
+            String dateString = requestJson.getString("date");
+            try {
+                workOrder.setDate(sdf.parse(dateString));
+            } catch (ParseException ex) {
+                workOrder.setDate(null);
+            }
+        }
+        if(requestJson.containsKey("technician")){
+            workOrder.setTechnician(requestJson.getString("technician"));
+        }
+        System.out.println(workOrder.toString());
+        workOrderDAO.updateWorkOrder(workOrder);
+        return Response.ok(workOrder).build();
     }
 }

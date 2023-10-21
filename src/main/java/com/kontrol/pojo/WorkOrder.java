@@ -49,6 +49,8 @@ public class WorkOrder {
         Technician = technician;
     }
 
-    
-    
+    public String toString(){
+        String response = "["+this.getAsset()+","+this.getClient()+","+this.getTechnician()+","+this.getId()+"]";
+        return response;
+    }
 }

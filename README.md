@@ -29,9 +29,12 @@ Registra una nueva orden de trabajo
 
 ### DELETE http://localhost:8080/kontrolreporte/kontrol/orders/{id}
 
+### PATH http://localhost:8080/kontrolreporte/kontrol/orders/
+
+Actualiza los atributos enviados en el json
+
 Elimina la orden de trabajo
 
 ## TODO
-* PATCH
 * Casos de prueba
 * Autenticación y autorización
